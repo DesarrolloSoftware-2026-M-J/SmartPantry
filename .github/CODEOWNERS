@@ -1,7 +1,4 @@
-feature/configuracion-inicial
 * @DesarrolloSoftware-2026-M-J/reviewers
 
-# Reemplazar <organizacion> por el nombre real de la organización del grupo.
 # El equipo reviewers debe ser visible y tener acceso de escritura al repositorio.
 * @DesarrolloSoftware-2026-M-J/developers
-main
