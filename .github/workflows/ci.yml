@@ -1,4 +1,3 @@
-feature/configuracion-inicial
 name: Verificación inicial
 on:
   pull_request:
