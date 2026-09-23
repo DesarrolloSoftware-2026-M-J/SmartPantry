@@ -66,5 +66,3 @@ jobs:
       - run: yarn build
   
 
-
-main
