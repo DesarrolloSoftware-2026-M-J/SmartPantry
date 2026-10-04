@@ -1,15 +1,13 @@
 using Riok.Mapperly.Abstractions;
 using Volo.Abp.Mapperly;
+using SmartPantry.Products;
 
 namespace SmartPantry;
 
-/*
- * You can add your own mappings here.
- * [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
- * public partial class SmartPantryApplicationMappers : MapperBase<BookDto, CreateUpdateBookDto>
- * {
- *    public override partial CreateUpdateBookDto Map(BookDto source);
- *
- *    public override partial void Map(BookDto source, CreateUpdateBookDto destination);
- * }
- */
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+public partial class ProductMapper : MapperBase<Product, ProductDto>
+{
+    public override partial ProductDto Map(Product source);
+
+    public override partial void Map(Product source, ProductDto destination);
+}
