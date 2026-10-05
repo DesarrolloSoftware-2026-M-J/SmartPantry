@@ -1,0 +1,5 @@
+describe('Prueba inicial de Angular', () => {
+  it('debería pasar siempre', () => {
+    expect(true).toBe(true);
+  });
+});
