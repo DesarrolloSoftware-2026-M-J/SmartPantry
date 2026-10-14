@@ -33,4 +33,32 @@ public class ProductDomainTests
             new Product(id, invalidName, "Serranitas", "123456");
         });
     }
+
+    [Fact]
+    public void Should_Update_Product_And_Keep_Normalization()
+    {
+        var product = new Product(Guid.NewGuid(), "Galletitas", "Serranitas", "123456");
+
+        product.Update("  Galletitas de agua  ", " Terrabusi ", " 654321 ");
+
+        product.Name.ShouldBe("Galletitas de agua");
+        product.Brand.ShouldBe("Terrabusi");
+        product.Barcode.ShouldBe("654321");
+    }
+
+    [Fact]
+    public void Should_Reject_Invalid_Update_And_Keep_Previous_State()
+    {
+        var product = new Product(Guid.NewGuid(), "Galletitas", "Serranitas", "123456");
+
+        Assert.Throws<ArgumentException>(() =>
+        {
+            product.Update("Nombre nuevo", "   ", "654321");
+        });
+
+        product.Name.ShouldBe("Galletitas");
+        product.Brand.ShouldBe("Serranitas");
+        product.Barcode.ShouldBe("123456");
+    }
+
 }

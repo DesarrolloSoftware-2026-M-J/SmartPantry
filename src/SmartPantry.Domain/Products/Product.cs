@@ -42,4 +42,16 @@ public class Product : AggregateRoot<Guid>
     {
         Barcode = Check.NotNullOrWhiteSpace(barcode, nameof(barcode), maxLength: ProductConsts.MaxBarcodeLength).Trim();
     }
+
+    public void Update(string name, string brand, string barcode)
+    {
+        var newName = Check.NotNullOrWhiteSpace(name, nameof(name), maxLength: ProductConsts.MaxNameLength).Trim();
+        var newBrand = Check.NotNullOrWhiteSpace(brand, nameof(brand), maxLength: ProductConsts.MaxBrandLength).Trim();
+        var newBarcode = Check.NotNullOrWhiteSpace(barcode, nameof(barcode), maxLength: ProductConsts.MaxBarcodeLength).Trim();
+
+        Name = newName;
+        Brand = newBrand;
+        Barcode = newBarcode;
+    }
+
 }

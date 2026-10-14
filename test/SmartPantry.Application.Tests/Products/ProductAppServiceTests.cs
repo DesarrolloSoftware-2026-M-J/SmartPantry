@@ -4,6 +4,8 @@ using Shouldly;
 using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
 using Xunit;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Entities;
 
 namespace SmartPantry.Products;
 public abstract class ProductAppServiceTests<TModule> : SmartPantryApplicationTestBase<TModule>
@@ -54,4 +56,42 @@ public abstract class ProductAppServiceTests<TModule> : SmartPantryApplicationTe
             await _productAppService.CreateAsync(invalidInput);
         });
     }
+
+    [Fact]
+    public async Task Should_Register_List_Update_Get_And_Delete_Product()
+    {
+        var created = await _productAppService.CreateAsync(new CreateProductDto
+        {
+            Name = "Yerba Mate",
+            Brand = "Taragüí",
+            Barcode = "7790000000001"
+        });
+
+        var list = await _productAppService.GetListAsync(new PagedAndSortedResultRequestDto
+        {
+            MaxResultCount = 1000,
+            Sorting = "Name"
+        });
+        list.TotalCount.ShouldBeGreaterThan(0);
+        list.Items.ShouldContain(p => p.Id == created.Id);
+
+        var updated = await _productAppService.UpdateAsync(created.Id, new UpdateProductDto
+        {
+            Name = "  Yerba Mate Suave  ",
+            Brand = "Taragüí",
+            Barcode = "7790000000001"
+        });
+        updated.Name.ShouldBe("Yerba Mate Suave");
+
+        var fetched = await _productAppService.GetAsync(created.Id);
+        fetched.Name.ShouldBe("Yerba Mate Suave");
+
+        await _productAppService.DeleteAsync(created.Id);
+
+        await Assert.ThrowsAnyAsync<EntityNotFoundException>(async () =>
+        {
+            await _productAppService.GetAsync(created.Id);
+        });
+    }
+
 }
