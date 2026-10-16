@@ -1,4 +1,6 @@
 using System;
+using SmartPantry.ExternalCatalog;
+using SmartPantry.ProductLookup;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -127,6 +129,7 @@ public class SmartPantryHttpApiHostModule : AbpModule
         ConfigureSwagger(context, configuration);
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
+        ConfigureExternalCatalog(context, configuration);
     }
 
     private void ConfigureStudio(IHostEnvironment hostingEnvironment)
@@ -245,6 +248,17 @@ public class SmartPantryHttpApiHostModule : AbpModule
                     .AllowAnyMethod()
                     .AllowCredentials();
             });
+        });
+    }
+    private void ConfigureExternalCatalog(ServiceConfigurationContext context, IConfiguration configuration)
+    {
+        var offSection = configuration.GetSection("OpenFoodFacts");
+
+        context.Services.AddHttpClient<IExternalProductCatalogClient, OpenFoodFactsProductCatalogClient>(client =>
+        {
+            client.BaseAddress = new Uri(offSection["BaseUrl"]!);
+            client.Timeout = TimeSpan.FromSeconds(offSection.GetValue("TimeoutSeconds", 15));
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(offSection["UserAgent"]!);
         });
     }
 
