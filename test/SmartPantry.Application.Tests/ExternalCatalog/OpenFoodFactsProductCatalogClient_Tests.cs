@@ -197,4 +197,20 @@ public class OpenFoodFactsProductCatalogClient_Tests
         await Assert.ThrowsAsync<ExternalCatalogUnavailableException>(
             () => client.GetByBarcodeAsync("3017620422003"));
     }
+    [Theory]
+    [InlineData("""{"code":"1","product":{"product_name":"Nutella","brands":"Ferrero"}}""", "Nutella", "Ferrero", null)]
+    [InlineData("""{"code":"1","product":{"product_name":"Nutella","image_front_url":"https://example.com/a.jpg"}}""", "Nutella", null, "https://example.com/a.jpg")]
+    [InlineData("""{"code":"1","product":{"brands":"Ferrero","image_front_url":"https://example.com/a.jpg"}}""", null, "Ferrero", "https://example.com/a.jpg")]
+    public async Task Debe_conservar_los_campos_presentes_cuando_falta_solo_uno(
+    string json, string? name, string? brand, string? imageUrl)
+    {
+        var (client, _) = CreateClient(_ => Json(json));
+
+        var result = await client.GetByBarcodeAsync("1");
+
+        Assert.NotNull(result);
+        Assert.Equal(name, result!.Name);
+        Assert.Equal(brand, result.Brand);
+        Assert.Equal(imageUrl, result.ImageUrl);
+    }
 }
