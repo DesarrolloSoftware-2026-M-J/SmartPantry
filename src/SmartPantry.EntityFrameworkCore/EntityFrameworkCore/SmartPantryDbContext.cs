@@ -13,6 +13,8 @@ using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using SmartPantry.Products;
+using SmartPantry.PantryItems;
+using SmartPantry.ExpirationWarnings;
 
 namespace SmartPantry.EntityFrameworkCore;
 
@@ -24,6 +26,8 @@ public class SmartPantryDbContext :
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
     public DbSet<Product> Products { get; set; }
+    public DbSet<PantryItem> PantryItems { get; set; }
+    public DbSet<ExpirationWarning> ExpirationWarnings { get; set; }
 
 
     #region Entities from the modules
@@ -87,6 +91,40 @@ public class SmartPantryDbContext :
             b.Property(x => x.Barcode)
                 .IsRequired()
                 .HasMaxLength(ProductConsts.MaxBarcodeLength);
+        });
+
+        builder.Entity<PantryItem>(b =>
+        {
+            b.ToTable(SmartPantryConsts.DbTablePrefix + "PantryItems", SmartPantryConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.OwnerId).IsRequired();
+            b.Property(x => x.ProductId).IsRequired();
+            b.Property(x => x.Status).IsRequired();
+            b.Property(x => x.ExpirationDate); 
+
+            b.HasOne<Product>()
+                .WithMany()
+                .HasForeignKey(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        builder.Entity<ExpirationWarning>(b =>
+        {
+            b.ToTable(SmartPantryConsts.DbTablePrefix + "ExpirationWarnings", SmartPantryConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.PantryItemId).IsRequired();
+            b.Property(x => x.Type).IsRequired();
+            b.Property(x => x.ExpirationDate).IsRequired();
+            b.Property(x => x.IsActive).IsRequired();
+
+            b.HasOne<PantryItem>()
+                .WithMany()
+                .HasForeignKey(x => x.PantryItemId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasIndex(x => new { x.PantryItemId, x.Type })
+                .IsUnique()
+                .HasDatabaseName($"UX_{SmartPantryConsts.DbTablePrefix}ExpirationWarnings_PantryItemId_Type");
         });
     }
 }
