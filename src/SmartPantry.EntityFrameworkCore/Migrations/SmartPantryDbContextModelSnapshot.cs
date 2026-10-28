@@ -24,6 +24,80 @@ namespace SmartPantry.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("SmartPantry.ExpirationWarnings.ExpirationWarning", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateOnly>("ExpirationDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("PantryItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PantryItemId", "Type")
+                        .IsUnique()
+                        .HasDatabaseName("UX_AppExpirationWarnings_PantryItemId_Type");
+
+                    b.ToTable("AppExpirationWarnings", (string)null);
+                });
+
+            modelBuilder.Entity("SmartPantry.PantryItems.PantryItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateOnly?>("ExpirationDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("AppPantryItems", (string)null);
+                });
+
             modelBuilder.Entity("SmartPantry.Products.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1936,6 +2010,24 @@ namespace SmartPantry.Migrations
                         .IsUnique();
 
                     b.ToTable("AbpSettingDefinitions", (string)null);
+                });
+
+            modelBuilder.Entity("SmartPantry.ExpirationWarnings.ExpirationWarning", b =>
+                {
+                    b.HasOne("SmartPantry.PantryItems.PantryItem", null)
+                        .WithMany()
+                        .HasForeignKey("PantryItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SmartPantry.PantryItems.PantryItem", b =>
+                {
+                    b.HasOne("SmartPantry.Products.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
