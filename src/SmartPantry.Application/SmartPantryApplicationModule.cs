@@ -26,6 +26,7 @@ public class SmartPantryApplicationModule : AbpModule
 {
     public override async Task OnApplicationInitializationAsync(ApplicationInitializationContext context)
     {
+        await base.OnApplicationInitializationAsync(context);
         await context.AddBackgroundWorkerAsync<ExpirationWarningWorker>();
     }
 }
