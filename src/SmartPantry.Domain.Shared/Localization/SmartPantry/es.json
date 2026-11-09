@@ -38,6 +38,8 @@
     "SeeAllUsers": "Ver todos los usuarios",
     "TakePhoto": "Tomar foto",
     "ChoosePhoto": "Escoge una foto",
-    "SmartPantry:QuantityMustBeGreaterThanZero": "La cantidad debe ser mayor a cero."
+    "SmartPantry:QuantityMustBeGreaterThanZero": "La cantidad debe ser mayor a cero.",
+    "Menu:Pantry": "Mi despensa",
+    "Pantry:Title": "Mi despensa"
   }
 }
