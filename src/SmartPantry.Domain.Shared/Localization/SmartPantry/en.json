@@ -7,6 +7,20 @@
     "Welcome": "Welcome",
     "SmartPantry:QuantityMustBeGreaterThanZero": "Quantity must be greater than zero.",
     "Menu:Pantry": "My pantry",
-    "Pantry:Title": "My pantry"
+    "Pantry:Title": "My pantry",
+    "Pantry:Loading": "Loading your pantry...",
+    "Pantry:LoadError": "We could not load your pantry. Please try again.",
+    "Pantry:Retry": "Retry",
+    "Pantry:Empty": "Your pantry is empty.",
+    "Pantry:Product": "Product",
+    "Pantry:Brand": "Brand",
+    "Pantry:Quantity": "Quantity",
+    "Pantry:Expiration": "Expiration date",
+    "Pantry:Status": "Status",
+    "Pantry:Active": "Active",
+    "Pantry:Consumed": "Consumed",
+    "Pantry:IncompleteData": "Incomplete data",
+    "Pantry:Previous": "Previous",
+    "Pantry:Next": "Next"
   }
 }

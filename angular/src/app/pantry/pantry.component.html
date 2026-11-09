@@ -1,3 +1,91 @@
 <div class="container">
-  <h2>{{ '::Pantry:Title' | abpLocalization }}</h2>
+  <h2 class="mb-3">{{ '::Pantry:Title' | abpLocalization }}</h2>
+
+  @if (loading()) {
+    <div class="text-center my-5" role="status">
+      <div class="spinner-border" aria-hidden="true"></div>
+      <p class="mt-2">{{ '::Pantry:Loading' | abpLocalization }}</p>
+    </div>
+  } @else if (error()) {
+    <div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+      <span>{{ '::Pantry:LoadError' | abpLocalization }}</span>
+      <button type="button" class="btn btn-outline-danger btn-sm" (click)="retry()">
+        {{ '::Pantry:Retry' | abpLocalization }}
+      </button>
+    </div>
+  } @else if (items().length === 0) {
+    <div class="alert alert-info" role="status">
+      {{ '::Pantry:Empty' | abpLocalization }}
+    </div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>{{ '::Pantry:Product' | abpLocalization }}</th>
+            <th>{{ '::Pantry:Brand' | abpLocalization }}</th>
+            <th>{{ '::Pantry:Quantity' | abpLocalization }}</th>
+            <th>{{ '::Pantry:Expiration' | abpLocalization }}</th>
+            <th>{{ '::Pantry:Status' | abpLocalization }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of items(); track item.id) {
+            <tr>
+              <td>
+                {{ item.productName }}
+                @if (isIncomplete(item)) {
+                  <span class="badge bg-warning text-dark ms-2">
+                    {{ '::Pantry:IncompleteData' | abpLocalization }}
+                  </span>
+                }
+              </td>
+              <td>{{ item.productBrand || '—' }}</td>
+              <td>
+                @if (item.quantity != null) {
+                  {{ item.quantity }} {{ item.unit }}
+                } @else {
+                  —
+                }
+              </td>
+              <td>
+                @if (item.expirationDate) {
+                  {{ item.expirationDate | date: 'dd/MM/yyyy' }}
+                } @else {
+                  —
+                }
+              </td>
+              <td>
+                @if (item.status === Status.Consumed) {
+                  <span class="badge bg-secondary">{{ '::Pantry:Consumed' | abpLocalization }}</span>
+                } @else {
+                  <span class="badge bg-success">{{ '::Pantry:Active' | abpLocalization }}</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center">
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm"
+        [disabled]="list.page === 0"
+        (click)="list.page = list.page - 1"
+      >
+        {{ '::Pantry:Previous' | abpLocalization }}
+      </button>
+      <span>{{ list.page + 1 }} / {{ totalPages() }}</span>
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm"
+        [disabled]="list.page + 1 >= totalPages()"
+        (click)="list.page = list.page + 1"
+      >
+        {{ '::Pantry:Next' | abpLocalization }}
+      </button>
+    </div>
+  }
 </div>

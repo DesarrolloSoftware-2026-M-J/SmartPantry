@@ -40,6 +40,20 @@
     "ChoosePhoto": "Escoge una foto",
     "SmartPantry:QuantityMustBeGreaterThanZero": "La cantidad debe ser mayor a cero.",
     "Menu:Pantry": "Mi despensa",
-    "Pantry:Title": "Mi despensa"
+    "Pantry:Title": "Mi despensa",
+    "Pantry:Loading": "Cargando tu despensa...",
+    "Pantry:LoadError": "No pudimos cargar tu despensa. Intentá de nuevo.",
+    "Pantry:Retry": "Reintentar",
+    "Pantry:Empty": "Tu despensa está vacía.",
+    "Pantry:Product": "Producto",
+    "Pantry:Brand": "Marca",
+    "Pantry:Quantity": "Cantidad",
+    "Pantry:Expiration": "Vencimiento",
+    "Pantry:Status": "Estado",
+    "Pantry:Active": "Activo",
+    "Pantry:Consumed": "Consumido",
+    "Pantry:IncompleteData": "Datos incompletos",
+    "Pantry:Previous": "Anterior",
+    "Pantry:Next": "Siguiente"
   }
 }
