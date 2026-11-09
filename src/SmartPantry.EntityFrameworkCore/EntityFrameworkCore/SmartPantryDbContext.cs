@@ -100,12 +100,9 @@ public class SmartPantryDbContext :
             b.Property(x => x.OwnerId).IsRequired();
             b.Property(x => x.ProductId).IsRequired();
             b.Property(x => x.Status).IsRequired();
-            b.Property(x => x.ExpirationDate); 
-
-            b.HasOne<Product>()
-                .WithMany()
-                .HasForeignKey(x => x.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+            b.Property(x => x.ExpirationDate);
+            b.Property(x => x.Quantity).HasPrecision(18, 3);
+            b.Property(x => x.Unit).HasMaxLength(32);
         });
 
         builder.Entity<ExpirationWarning>(b =>

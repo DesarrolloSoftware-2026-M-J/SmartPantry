@@ -88,12 +88,18 @@ namespace SmartPantry.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal?>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("decimal(18,3)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Unit")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
-                    b.HasIndex("ProductId");
+                    b.HasKey("Id");
 
                     b.ToTable("AppPantryItems", (string)null);
                 });
@@ -2018,15 +2024,6 @@ namespace SmartPantry.Migrations
                         .WithMany()
                         .HasForeignKey("PantryItemId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SmartPantry.PantryItems.PantryItem", b =>
-                {
-                    b.HasOne("SmartPantry.Products.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
