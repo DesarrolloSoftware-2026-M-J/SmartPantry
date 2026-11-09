@@ -21,6 +21,23 @@
     "Pantry:Consumed": "Consumed",
     "Pantry:IncompleteData": "Incomplete data",
     "Pantry:Previous": "Previous",
-    "Pantry:Next": "Next"
+    "Pantry:Next": "Next",
+    "Pantry:Actions": "Actions",
+    "Pantry:Unit": "Unit",
+    "Pantry:Edit": "Edit",
+    "Pantry:EditTitle": "Edit item",
+    "Pantry:MarkAsConsumed": "Mark as consumed",
+    "Pantry:Delete": "Delete",
+    "Pantry:Save": "Save",
+    "Pantry:Cancel": "Cancel",
+    "Pantry:Saved": "Item updated.",
+    "Pantry:MarkedAsConsumed": "Item marked as consumed.",
+    "Pantry:Deleted": "Item deleted.",
+    "Pantry:QuantityInvalid": "Quantity must be greater than zero.",
+    "Pantry:UnitTooLong": "Unit cannot exceed 32 characters.",
+    "Pantry:ConfirmConsumeTitle": "Mark as consumed",
+    "Pantry:ConfirmConsumeMessage": "This item will be marked as consumed. Do you want to continue?",
+    "Pantry:ConfirmDeleteTitle": "Delete item",
+    "Pantry:ConfirmDeleteMessage": "This item will be permanently deleted. Do you want to continue?"
   }
 }
