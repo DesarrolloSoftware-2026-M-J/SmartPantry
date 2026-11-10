@@ -1,5 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocalizationPipe, ListService, PagedResultDto } from '@abp/ng.core';
 import { Confirmation, ConfirmationService, ToasterService } from '@abp/ng.theme.shared';
@@ -45,7 +46,7 @@ export class PantryComponent implements OnInit {
       .hookToQuery(query => {
         this.loading.set(true);
         this.error.set(false);
-        return this.pantryItemService.getList(query).pipe(
+        return this.pantryItemService.getList(query, { skipHandleError: true }).pipe(
           catchError(() => {
             this.error.set(true);
             return of({ items: [], totalCount: 0 } as PagedResultDto<PantryItemDto>);
@@ -93,16 +94,23 @@ export class PantryComponent implements OnInit {
     const value = this.form.getRawValue();
     this.saving.set(true);
     this.pantryItemService
-      .update(item.id!, {
-        quantity: value.quantity ?? undefined,
-        unit: value.unit?.trim() || undefined,
-        expirationDate: value.expirationDate || undefined,
-      })
+      .update(
+        item.id!,
+        {
+          quantity: value.quantity ?? undefined,
+          unit: value.unit?.trim() || undefined,
+          expirationDate: value.expirationDate || undefined,
+        },
+        { skipHandleError: true },
+      )
       .pipe(finalize(() => this.saving.set(false)))
-      .subscribe(() => {
-        this.toaster.success('::Pantry:Saved');
-        this.editing.set(null);
-        this.list.get();
+      .subscribe({
+        next: () => {
+          this.toaster.success('::Pantry:Saved');
+          this.editing.set(null);
+          this.list.get();
+        },
+        error: err => this.onActionError(err),
       });
   }
 
@@ -113,9 +121,12 @@ export class PantryComponent implements OnInit {
         if (status !== Confirmation.Status.confirm) {
           return;
         }
-        this.pantryItemService.markAsConsumed(item.id!).subscribe(() => {
-          this.toaster.success('::Pantry:MarkedAsConsumed');
-          this.list.get();
+        this.pantryItemService.markAsConsumed(item.id!, { skipHandleError: true }).subscribe({
+          next: () => {
+            this.toaster.success('::Pantry:MarkedAsConsumed');
+            this.list.get();
+          },
+          error: err => this.onActionError(err),
         });
       });
   }
@@ -127,10 +138,23 @@ export class PantryComponent implements OnInit {
         if (status !== Confirmation.Status.confirm) {
           return;
         }
-        this.pantryItemService.delete(item.id!).subscribe(() => {
-          this.toaster.success('::Pantry:Deleted');
-          this.list.get();
+        this.pantryItemService.delete(item.id!, { skipHandleError: true }).subscribe({
+          next: () => {
+            this.toaster.success('::Pantry:Deleted');
+            this.list.get();
+          },
+          error: err => this.onActionError(err),
         });
       });
+  }
+
+  private onActionError(err: HttpErrorResponse): void {
+    if (err?.status === 404) {
+      this.toaster.warn('::Pantry:ItemNotFound');
+      this.editing.set(null);
+      this.list.get();
+      return;
+    }
+    this.toaster.error('::Pantry:ActionError');
   }
 }
