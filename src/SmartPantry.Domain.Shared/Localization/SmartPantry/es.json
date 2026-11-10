@@ -73,6 +73,7 @@
     "Pantry:ConfirmDeleteTitle": "Eliminar ítem",
     "Pantry:ConfirmDeleteMessage": "Este ítem se va a eliminar de forma definitiva. ¿Querés continuar?",
     "Pantry:ItemNotFound": "El ítem ya no existe.",
-    "Pantry:ActionError": "No pudimos completar la acción. Intentá de nuevo."
+    "Pantry:ActionError": "No pudimos completar la acción. Intentá de nuevo.",
+    "Pantry:NotAvailable": "No informado"
   }
 }

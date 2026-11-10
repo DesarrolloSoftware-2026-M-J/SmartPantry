@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+  import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -155,6 +155,19 @@ export class PantryComponent implements OnInit {
       this.list.get();
       return;
     }
+
+    if (err?.status === 400) {
+      const apiError = err.error?.error;
+      const details = (apiError?.validationErrors ?? [])
+        .map((e: { message: string }) => e.message)
+        .join(' ');
+      const message = details || apiError?.message;
+      if (message) {
+        this.toaster.error(message);
+        return;
+      }
+    }
+
     this.toaster.error('::Pantry:ActionError');
   }
 }

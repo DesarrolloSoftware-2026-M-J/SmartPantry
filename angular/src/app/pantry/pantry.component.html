@@ -93,19 +93,19 @@
                   </span>
                 }
               </td>
-              <td>{{ item.productBrand || '—' }}</td>
+              <td>{{ item.productBrand || ('::Pantry:NotAvailable' | abpLocalization) }}</td>
               <td>
                 @if (item.quantity != null) {
                   {{ item.quantity }} {{ item.unit }}
                 } @else {
-                  —
+                  {{ '::Pantry:NotAvailable' | abpLocalization }}
                 }
               </td>
               <td>
                 @if (item.expirationDate) {
-                  {{ item.expirationDate | date: 'dd/MM/yyyy' }}
+                  {{ item.expirationDate | date: 'shortDate' }}
                 } @else {
-                  —
+                  {{ '::Pantry:NotAvailable' | abpLocalization }}
                 }
               </td>
               <td>

@@ -40,6 +40,7 @@
     "Pantry:ConfirmDeleteTitle": "Delete item",
     "Pantry:ConfirmDeleteMessage": "This item will be permanently deleted. Do you want to continue?",
     "Pantry:ItemNotFound": "This item no longer exists.",
-    "Pantry:ActionError": "We could not complete the action. Please try again."
+    "Pantry:ActionError": "We could not complete the action. Please try again.",
+    "Pantry:NotAvailable": "Not provided"
   }
 }
