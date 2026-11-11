@@ -92,3 +92,6 @@ Las llamadas del listado, la edición, el consumo y la eliminación usan `skipHa
 - Datos rechazados por el servidor (400): se muestra el mensaje que devuelve el servidor y el formulario conserva lo ingresado.
 
 Un ítem de otro usuario se responde con **404** (no se revela que existe).
+
+### Ancho reducido
+En pantallas de menos de 768 px la tabla se muestra como una tarjeta por ítem, con cada dato rotulado (las etiquetas salen de la localización de ABP) y los botones de acción visibles, sin desplazamiento horizontal de la página. En pantallas más anchas se mantiene la tabla. Se comprobó a 375 px.

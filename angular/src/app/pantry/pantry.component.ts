@@ -1,4 +1,4 @@
-  import { Component, OnInit, computed, inject, signal } from '@angular/core';
+﻿  import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -13,6 +13,7 @@ import { catchError, finalize, of } from 'rxjs';
   imports: [LocalizationPipe, DatePipe, ReactiveFormsModule],
   providers: [ListService],
   templateUrl: './pantry.component.html',
+  styleUrl: './pantry.component.scss',
 })
 export class PantryComponent implements OnInit {
   readonly list = inject(ListService);
