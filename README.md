@@ -1,15 +1,3 @@
-feature/configuracion-inicial
-# Desarrollo de Software 2026
-
-Repositorio del Trabajo Práctico Integrador de Desarrollo de Software 2026.
-
-## Integrantes
-- Buet Mia buetmia-sudo
-- Sigales Maria Juliana mjulianasig1-cloud
-
-## Cómo ejecutar
-Pendiente de TP 03.
-
 # SmartPantry
 
 # Desarrollo de Software 2026
@@ -83,5 +71,27 @@ Comandos utilizados por el grupo para comprobar la correcta compilación y ejecu
 
 * Frontend (Angular): (Ejecutados desde la carpeta /angular)
     yarn build
-    yarn test --watch=false
-main
+    yarn test --no-watch
+
+## TP10 - Pantalla "Mi despensa" (RF-11)
+
+### Ítems consumidos
+Los ítems consumidos **no se eliminan automáticamente**: siguen apareciendo en la lista con el estado "Consumido", como historial. Un ítem consumido no se puede editar ni volver a marcar como consumido (la pantalla oculta esos botones), pero sí se puede eliminar. El BackEnd conserva el ítem con su estado cambiado.
+
+### Uso de `ListService`
+Se usó `ListService` de ABP para el listado. Maneja la paginación (`skipCount` y `maxResultCount`), vuelve a pedir los datos con `get()` después de editar, consumir o eliminar, y cancela una consulta anterior si se pide otra (`switchMap`). El error se captura dentro de la función que crea la consulta (`catchError`), para que un fallo no corte el flujo y el botón "Reintentar" pueda volver a consultar.
+
+### Criterio de fechas
+El vencimiento es una fecha sin hora (`DateOnly`) y no tiene zona horaria. En la pantalla se muestra con el formato regional de la aplicación (`date: 'shortDate'`, que toma el idioma activo de ABP), sin conversión de zona horaria. El worker de avisos calcula "hoy" en **UTC** y corre cada hora, por lo que un cambio de fecha o de estado se refleja en los avisos en la siguiente corrida.
+
+### Manejo de errores
+Las llamadas del listado, la edición, el consumo y la eliminación usan `skipHandleError`, para mostrar mensajes propios en lugar del cuadro genérico de ABP:
+- Fallo al cargar: aviso con botón "Reintentar".
+- Ítem inexistente o de otro usuario (404): aviso "El ítem ya no existe" y recarga de la lista.
+- Otros fallos: aviso "No pudimos completar la acción".
+- Datos rechazados por el servidor (400): se muestra el mensaje que devuelve el servidor y el formulario conserva lo ingresado.
+
+Un ítem de otro usuario se responde con **404** (no se revela que existe).
+
+### Ancho reducido
+En pantallas de menos de 768 px la tabla se muestra como una tarjeta por ítem, con cada dato rotulado (las etiquetas salen de la localización de ABP) y los botones de acción visibles, sin desplazamiento horizontal de la página. En pantallas más anchas se mantiene la tabla. Se comprobó a 375 px.
